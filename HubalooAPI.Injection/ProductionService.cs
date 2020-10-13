@@ -10,9 +10,9 @@ namespace HubalooAPI.Injection
     {
         public ProductionService(IServiceCollection services)
         {
-            // services.AddSingleton<IDatabase, DapperDatabase>();
-            // services.AddSingleton<IAuthManager, AuthManager>();
-            // services.AddSingleton<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IDatabase, DapperDatabase>();
+            services.AddSingleton<IAuthManager, AuthManager>();
+            services.AddSingleton<IAuthRepository, AuthRepository>();
         }
     }
 }

@@ -1,6 +1,7 @@
 using HubalooAPI.BLL;
 using HubalooAPI.Dal.Auth;
 using HubalooAPI.Dal.Database;
+using HubalooAPI.Injection;
 using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
 using Microsoft.AspNetCore.Builder;
@@ -24,12 +25,12 @@ namespace HubalooAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IDatabase, DapperDatabase>();
-            services.AddSingleton<IAuthManager, AuthManager>();
-            services.AddSingleton<IAuthRepository, AuthRepository>();
+            // services.AddSingleton<IDatabase, DapperDatabase>();
+            // services.AddSingleton<IAuthManager, AuthManager>();
+            // services.AddSingleton<IAuthRepository, AuthRepository>();
 
-            // SetUpServiceProviders(services);
-            // var service = services.BuildServiceProvider();
+            SetUpServiceProviders(services);
+            var service = services.BuildServiceProvider();
 
         }
 
@@ -53,9 +54,9 @@ namespace HubalooAPI
             });
         }
 
-        // private void SetUpServiceProviders(IServiceCollection services)
-        // {
-        //     var productionService = new ProductionService(services);
-        // }
+        private void SetUpServiceProviders(IServiceCollection services)
+        {
+            var productionService = new ProductionService(services);
+        }
     }
 }
