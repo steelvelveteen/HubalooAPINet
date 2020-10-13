@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HubalooAPI.Controllers
 {
+    // GET https://localhost:5001/weatherforecast
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
