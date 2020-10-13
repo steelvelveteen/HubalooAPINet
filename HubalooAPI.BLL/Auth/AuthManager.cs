@@ -19,7 +19,7 @@ namespace HubalooAPI.BLL
             return _authRepository.Login(username, password);
         }
 
-        public Task<User> Register(User user, string password)
+        public Task<User> Signup(User user, string password)
         {
             return _authRepository.Register(user, password);
         }

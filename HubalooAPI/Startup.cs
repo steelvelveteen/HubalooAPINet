@@ -43,7 +43,7 @@ namespace HubalooAPI
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseRouting();
 
             app.UseAuthorization();

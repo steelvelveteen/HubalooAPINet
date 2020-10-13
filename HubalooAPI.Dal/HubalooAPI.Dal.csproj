@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj" />
-    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj"/>
+    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-rc.1.20451.14" />
-    <PackageReference Include="Npgsql" Version="5.0.0-alpha1" />
+    <PackageReference Include="Dapper" Version="2.0.35"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-rc.1.20451.14"/>
+    <PackageReference Include="Npgsql" Version="5.0.0-alpha1"/>
+    <PackageReference Include="MongoDB.Driver" Version="2.11.2"/>
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>

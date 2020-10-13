@@ -34,7 +34,7 @@ namespace HubalooAPI.Dal.Auth
             return user;
         }
 
-        public async Task<User> Register(User user, string password)
+        public async Task<User> Signup(User user, string password)
         {
             byte[] passwordSalt;
             CreatePasswordHash(password, out byte[] passwordHash, out passwordSalt);
@@ -43,7 +43,7 @@ namespace HubalooAPI.Dal.Auth
             user.PasswordSalt = passwordSalt;
 
             var parameters = new DynamicParameters();
-            parameters.Add("@Username", user.Username);
+            parameters.Add("@Username", user.Email);
             parameters.Add("@PasswordHash", user.PasswordHash);
             parameters.Add("@PasswordSalt", user.PasswordSalt);
 

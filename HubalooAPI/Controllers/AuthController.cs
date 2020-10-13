@@ -18,23 +18,23 @@ namespace WebAPIv2.Controllers
         }
 
 
-        // https://localhost:5001/auth/register
+        // https://localhost:5001/auth/Signup
         [HttpPost]
         [Route("/[controller]/Register")]
-        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Signup(UserForRegisterDto userForRegisterDto)
         {
             // Validate request
-            userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+            userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
 
             // Check if user already exists
-            if (await UserExists(userForRegisterDto.Username))
+            if (await UserExists(userForRegisterDto.Email))
             {
                 return BadRequest("Username already exists.");
             }
 
             var userToCreate = new User
             {
-                Username = userForRegisterDto.Username
+                Email = userForRegisterDto.Email
             };
 
             var createdUser = await _authManager.Register(userToCreate, userForRegisterDto.Password);
