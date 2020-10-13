@@ -1,5 +1,5 @@
 ### Testing the environment, connecting to psql running locally
-POST http://localhost:5001/register
+POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {

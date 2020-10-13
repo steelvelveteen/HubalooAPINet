@@ -1,3 +1,4 @@
+using HubalooAPI.BLL;
 using HubalooAPI.Dal.Auth;
 using HubalooAPI.Dal.Database;
 using HubalooAPI.Interfaces.BLL;

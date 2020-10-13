@@ -52,5 +52,5 @@ namespace HubalooAPI.Dal.Database
             var connection = new NpgsqlConnection(_config["ConnectionString"]);
             return connection;
         }
-
-loki74
+    }
+}
