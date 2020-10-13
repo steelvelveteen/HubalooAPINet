@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -46,11 +47,15 @@ namespace HubalooAPI.Dal.Database
             // //MS SQL
             // var connection = new SqlConnection(_config["ConnectionString"]);
             // connection.Open();
-            // return connection;
 
             //PSQL
             var connection = new NpgsqlConnection(_config["ConnectionString"]);
+
+            // MongoDB
+            // var connection = new SqlConnection(_config["ConnectionString"]);
+
             return connection;
+
         }
     }
 }

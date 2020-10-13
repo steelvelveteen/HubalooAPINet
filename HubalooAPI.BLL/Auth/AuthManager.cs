@@ -21,7 +21,7 @@ namespace HubalooAPI.BLL
 
         public Task<User> Signup(User user, string password)
         {
-            return _authRepository.Register(user, password);
+            return _authRepository.Signup(user, password);
         }
 
         public Task<bool> UserExists(string username)
