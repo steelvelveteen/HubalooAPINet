@@ -18,7 +18,7 @@ namespace HubalooAPI.Dal.Auth
 
         public async Task<User> Login(string email, string password)
         {
-            var sql = $"Select * from Users WHERE email = eamil ";
+            var sql = $"Select * from Users WHERE email = email ";
             var user = await _database.QueryFirstOrDefaultAsync<User>(sql);
 
             if (user == null)
@@ -47,7 +47,6 @@ namespace HubalooAPI.Dal.Auth
             parameters.Add("@PasswordHash", user.PasswordHash);
             parameters.Add("@PasswordSalt", user.PasswordSalt);
 
-            // var sql = $"insert into [dbo].[Users]([Username], [PasswordHash], [PasswordSalt]) values (@Username, @PasswordHash, @PasswordSalt)";
             var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
             await _database.ExecuteAsync(sql, parameters);
@@ -59,7 +58,6 @@ namespace HubalooAPI.Dal.Auth
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Email", email);
-            // var sql = "Select [Username] from [dbo].[Users] WHERE [Username] = @Username ";
             var sql = "Select email from users WHERE email = @Email ";
 
             var user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
