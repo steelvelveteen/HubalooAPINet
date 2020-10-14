@@ -16,10 +16,13 @@ namespace HubalooAPI.Dal.Auth
             _database = database;
         }
 
-        public async Task<User> Login(string email, string password)
+        public async Task<User> Login(string useremail, string password)
         {
-            var sql = $"Select * from Users WHERE email = email ";
-            var user = await _database.QueryFirstOrDefaultAsync<User>(sql);
+            var parameters = new DynamicParameters();
+            parameters.Add("@Email", useremail);
+            var sql = "Select * from users WHERE email = @Email ";
+
+            var user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
 
             if (user == null)
             {

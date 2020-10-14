@@ -48,7 +48,16 @@ namespace WebAPIv2.Controllers
 
             var createdUser = await _authManager.Signup(userToCreate, userForRegisterDto.Password);
 
-            return StatusCode(201);
+            return Created("", new
+            {
+                message = "User successfully created.",
+                user = new
+                {
+                    user_id = createdUser.Id,
+                    email = createdUser.Email
+                }
+
+            });
         }
 
         [AllowAnonymous]
@@ -89,6 +98,9 @@ namespace WebAPIv2.Controllers
 
             return Ok(new
             {
+                message = "Login Success",
+                user_id = authUser.Id,
+                email = authUser.Email,
                 token = tokenHandler.WriteToken(token)
             });
 

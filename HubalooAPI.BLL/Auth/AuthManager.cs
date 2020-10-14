@@ -14,9 +14,9 @@ namespace HubalooAPI.BLL
             _authRepository = authRepository;
         }
 
-        public Task<User> Login(string username, string password)
+        public Task<User> Login(string email, string password)
         {
-            return _authRepository.Login(username, password);
+            return _authRepository.Login(email, password);
         }
 
         public Task<User> Signup(User user, string password)
@@ -24,9 +24,9 @@ namespace HubalooAPI.BLL
             return _authRepository.Signup(user, password);
         }
 
-        public Task<bool> UserExists(string username)
+        public Task<bool> UserExists(string email)
         {
-            return _authRepository.UserExists(username);
+            return _authRepository.UserExists(email);
         }
     }
 }
