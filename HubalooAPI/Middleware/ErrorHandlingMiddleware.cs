@@ -48,11 +48,12 @@ namespace HubalooAPI.Middleware
 
             var responseBody = JsonConvert.SerializeObject(new
             {
-                messagae = errorMessage
+                message = errorMessage
             });
 
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)httpStatusCode;
+
             return httpContext.Response.WriteAsync(responseBody);
         }
     }
