@@ -1,7 +1,10 @@
 using Dapper;
 using HubalooAPI.Dal.Database;
+using HubalooAPI.Exceptions;
 using HubalooAPI.Interfaces.Dal;
 using HubalooAPI.Models.Auth;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace HubalooAPI.Dal.Auth
@@ -10,20 +13,38 @@ namespace HubalooAPI.Dal.Auth
     {
 
         private readonly IDatabase _database;
+        private readonly ILogger _logger;
 
-        public AuthRepository(IDatabase database)
+        public AuthRepository(IDatabase database, ILogger<AuthRepository> logger)
         {
             _database = database;
+            _logger = logger;
         }
 
         public async Task<User> Login(string useremail, string password)
         {
+            // throw new RepositoryException("Incoming messgae");
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
-            var sql = "Select * from users WHERE email = @Email ";
+            // var sql = "Select * from users WHERE email = @Email ";
+            var sql = "Select * from use WHERE email = @Email ";
 
-            var user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
+            User user;
+            try
+            {
+                user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
 
+            }
+            catch (RepositoryException e)
+            {
+                _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
+                return null;
+            }
             if (user == null)
             {
                 return null;
