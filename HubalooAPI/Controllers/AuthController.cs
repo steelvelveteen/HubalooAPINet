@@ -54,20 +54,20 @@ namespace WebAPIv2.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
-        public IActionResult Login(UserLoginDto userLoginDto)
+        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
             if (String.IsNullOrEmpty(userLoginDto.Email.Trim()) || String.IsNullOrEmpty(userLoginDto.Password.Trim()))
             {
                 return Unauthorized("Username and Password are required");
             }
 
-            var emailExists = _authManager.UserExists(userLoginDto.Email);
-            if (emailExists == null)
+            var emailExists = await _authManager.UserExists(userLoginDto.Email);
+            if (!emailExists)
             {
                 return Unauthorized("User does not exist in database");
             }
 
-            var authUser = _authManager.Login(userLoginDto.Email, userLoginDto.Password);
+            var authUser = await _authManager.Login(userLoginDto.Email, userLoginDto.Password);
             var claims = new[] {
                 new Claim(ClaimTypes.Email, authUser.Email)
             };
