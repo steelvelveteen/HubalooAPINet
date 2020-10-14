@@ -4,11 +4,13 @@ using HubalooAPI.Dal.Database;
 using HubalooAPI.Injection;
 using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
+using HubalooAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace HubalooAPI
 {
@@ -25,12 +27,12 @@ namespace HubalooAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            // services.AddSingleton<IDatabase, DapperDatabase>();
-            // services.AddSingleton<IAuthManager, AuthManager>();
-            // services.AddSingleton<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IDatabase, DapperDatabase>();
+            services.AddSingleton<IAuthManager, AuthManager>();
+            services.AddSingleton<IAuthRepository, AuthRepository>();
 
-            SetUpServiceProviders(services);
-            var service = services.BuildServiceProvider();
+            // SetUpServiceProviders(services);
+            // var service = services.BuildServiceProvider();
 
         }
 
@@ -42,8 +44,16 @@ namespace HubalooAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            // Middleware
+            app.UseMiddleware<FirstCustomMiddleware>();
+
             app.UseHttpsRedirection();
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+            app.UseCors(builder => builder
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowAnyOrigin());
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -54,9 +64,9 @@ namespace HubalooAPI
             });
         }
 
-        private void SetUpServiceProviders(IServiceCollection services)
-        {
-            var productionService = new ProductionService(services);
-        }
+        // private void SetUpServiceProviders(IServiceCollection services)
+        // {
+        //     var productionService = new ProductionService(services);
+        // }
     }
 }
