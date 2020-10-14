@@ -1,14 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
-    <ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.BLL\HubalooAPI.BLL.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Dal\HubalooAPI.Dal.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Injection\HubalooAPI.Injection.csproj"/>
+    <ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj" />
+    <ProjectReference Include="..\HubalooAPI.BLL\HubalooAPI.BLL.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Dal\HubalooAPI.Dal.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Injection\HubalooAPI.Injection.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0"/>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0"/>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.8.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>

@@ -18,7 +18,7 @@ namespace WebAPIv2.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger<AuthController> _logger;
+        // private readonly ILogger<AuthController> _logger;
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
         public AuthController(IAuthManager authManager, ILogger<AuthController> logger, IConfiguration configuration)

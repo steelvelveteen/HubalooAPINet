@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubalooAPI.Dal", "HubalooAP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubalooAPI.Injection", "HubalooAPI.Injection\HubalooAPI.Injection.csproj", "{185939A6-00A4-4490-93C6-5C1A026E4C28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HubalooAPI.Exceptions", "HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj", "{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,5 +102,17 @@ Global
 		{185939A6-00A4-4490-93C6-5C1A026E4C28}.Release|x64.Build.0 = Release|Any CPU
 		{185939A6-00A4-4490-93C6-5C1A026E4C28}.Release|x86.ActiveCfg = Release|Any CPU
 		{185939A6-00A4-4490-93C6-5C1A026E4C28}.Release|x86.Build.0 = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|x64.Build.0 = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{0DE9BBEF-BFF7-4274-8762-2ACBEE4514B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
