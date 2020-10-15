@@ -25,7 +25,7 @@ namespace HubalooAPI.Dal.Auth
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
-            var sql = "Select * from users WHERE email = @Email ";
+            var sql = "Select * from users WHERE email = @Email";
 
             // Following deliberately set to fail Internal Server Error
             // var sql = "Select * from use WHERE email = @Email ";
@@ -75,6 +75,11 @@ namespace HubalooAPI.Dal.Auth
             var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
             await _database.ExecuteAsync(sql, parameters);
+
+            // Return the user inserted into DB
+            parameters.Add("@Email", user.Email);
+            var newSql = "Select * from users WHERE email = @Email";
+            user = await _database.QueryFirstOrDefaultAsync<User>(newSql, parameters);
 
             return user;
         }
