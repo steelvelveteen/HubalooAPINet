@@ -23,11 +23,12 @@ namespace HubalooAPI.Dal.Auth
 
         public async Task<User> Login(string useremail, string password)
         {
-            // throw new RepositoryException("Incoming messgae");
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
-            // var sql = "Select * from users WHERE email = @Email ";
-            var sql = "Select * from use WHERE email = @Email ";
+            var sql = "Select * from users WHERE email = @Email ";
+
+            // Following deliberately set to fail Internal Server Error
+            // var sql = "Select * from use WHERE email = @Email ";
 
             User user;
             try

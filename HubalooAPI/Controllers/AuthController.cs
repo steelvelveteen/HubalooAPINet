@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 
 namespace WebAPIv2.Controllers
 {
@@ -38,7 +39,7 @@ namespace WebAPIv2.Controllers
             // Check if user already exists
             if (await UserExists(userForRegisterDto.Email))
             {
-                return BadRequest("Username already exists.");
+                return StatusCode(409, new { message = "Username already exists." });
             }
 
             var userToCreate = new User
@@ -48,7 +49,7 @@ namespace WebAPIv2.Controllers
 
             var createdUser = await _authManager.Signup(userToCreate, userForRegisterDto.Password);
 
-            return Created("", new
+            return StatusCode(201, new
             {
                 message = "User successfully created.",
                 user = new
@@ -68,41 +69,60 @@ namespace WebAPIv2.Controllers
             if (String.IsNullOrEmpty(userLoginDto.Email.Trim()) || String.IsNullOrEmpty(userLoginDto.Password.Trim()))
             {
                 return Unauthorized("Username and Password are required");
+
             }
 
             var emailExists = await _authManager.UserExists(userLoginDto.Email);
             if (!emailExists)
             {
-                return Unauthorized("User does not exist in database");
+                return StatusCode(401, new
+                {
+                    message = new[] {
+                            "The username or password you have enterd is wrong.NET",
+                            "Please try again"
+                    }
+                });
             }
+            try
+            {
 
-            var authUser = await _authManager.Login(userLoginDto.Email, userLoginDto.Password);
-            var claims = new[] {
+                var authUser = await _authManager.Login(userLoginDto.Email, userLoginDto.Password);
+                var claims = new[] {
                 new Claim(ClaimTypes.Email, authUser.Email)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddDays(1),
+                    SigningCredentials = creds
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                return Ok(new
+                {
+                    message = "Login Success",
+                    user_id = authUser.Id,
+                    email = authUser.Email,
+                    token = tokenHandler.WriteToken(token)
+                });
+            }
+            catch (Exception ex)
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return Ok(new
-            {
-                message = "Login Success",
-                user_id = authUser.Id,
-                email = authUser.Email,
-                token = tokenHandler.WriteToken(token)
-            });
+                return StatusCode(500, new
+                {
+                    message = new[] {
+                        "There was a problem loggin in (NET). Try again later."
+                    }
+                });
+            }
 
         }
 
