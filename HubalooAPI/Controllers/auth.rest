@@ -34,6 +34,14 @@ Content-Type: application/json
     "email": "joeyvico@gmail.com",
     "password": "quicksilver74"
 }
+###  Passing empty data  to test backend's validation
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "email": "",
+    "password": ""
+}
 
 
 ###  connecting to psql running locally
