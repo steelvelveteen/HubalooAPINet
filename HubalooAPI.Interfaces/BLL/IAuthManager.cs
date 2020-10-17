@@ -5,9 +5,7 @@ namespace HubalooAPI.Interfaces.BLL
 {
     public interface IAuthManager
     {
-        Task<UserLoginResponseDto> Login(string username, string password);
-
+        Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto);
         Task<User> Signup(User user, string password);
-        Task<bool> UserExists(string username);
     }
 }

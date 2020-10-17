@@ -1,4 +1,5 @@
 using System;
+using HubalooAPI.Exceptions;
 using HubalooAPI.Interfaces.Validators;
 using HubalooAPI.Models.Auth;
 
@@ -6,9 +7,12 @@ namespace HubalooAPI.BLL.Validators
 {
     public class AuthValidator : IAuthValidator
     {
-        public bool ValidateUserLogin(UserLoginRequestDto userLoginRequestDto)
+        public void ValidateUserLogin(UserLoginRequestDto userLoginRequestDto)
         {
-            return String.IsNullOrEmpty(userLoginRequestDto.Email.Trim()) || String.IsNullOrEmpty(userLoginRequestDto.Password.Trim());
+            if (String.IsNullOrEmpty(userLoginRequestDto.Email.Trim()) || String.IsNullOrEmpty(userLoginRequestDto.Password.Trim()))
+            {
+                throw new PreconditionException("Email and Password are requiredyes");
+            }
         }
     }
 }

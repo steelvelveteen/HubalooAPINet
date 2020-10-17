@@ -17,49 +17,44 @@ namespace HubalooAPI.Controllers
         // private readonly ILogger<AuthController> _logger;
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
-        private readonly IAuthValidator _authValidator;
-        public AuthController(IAuthManager authManager, IAuthValidator authValidator, IConfiguration configuration)
+        public AuthController(IAuthManager authManager, IConfiguration configuration)
         {
             _authManager = authManager;
             _configuration = configuration;
-            _authValidator = authValidator;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
-        public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto userLoginRequestDto)
+        // public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto userLoginRequestDto)
+        public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
         {
-            // if (_authValidator.ValidateUserLogin(userLoginRequestDto))
+
+            // if (!await _authManager.UserExists(userLoginRequestDto.Email))
             // {
-            //     return Unauthorized("Username and Password are required");
+            //     return StatusCode(401, new
+            //     {
+            //         message = new[] {
+            //                 "The username or password you have enterd is wrong.NET",
+            //                 "Please try again"
+            //         }
+            //     });
             // }
-
-            if (!await _authManager.UserExists(userLoginRequestDto.Email))
-            {
-                return StatusCode(401, new
-                {
-                    message = new[] {
-                            "The username or password you have enterd is wrong.NET",
-                            "Please try again"
-                    }
-                });
-            }
-            try
-            {
-                var authUser = await _authManager.Login(userLoginRequestDto.Email, userLoginRequestDto.Password);
-
-                return Ok(authUser);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, new
-                {
-                    message = new[] {
-                        "There was a problem loggin in (NET). Try again later."
-                    }
-                });
-            }
+            // try
+            // {
+            var authUser = await _authManager.Login(userLoginRequestDto);
+            return authUser;
+            // return Ok(authUser);
+            // }
+            // catch (Exception)
+            // {
+            //     return StatusCode(500, new
+            //     {
+            //         message = new[] {
+            //             "There was a problem loggin in (NET). Try again later."
+            //         }
+            //     });
+            // }
 
         }
 
@@ -72,10 +67,10 @@ namespace HubalooAPI.Controllers
             userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
 
             // Check if user already exists
-            if (await UserExists(userSignUpRequestDto.Email))
-            {
-                return StatusCode(409, new { message = "Username already exists." });
-            }
+            // if (await UserExists(userSignUpRequestDto.Email))
+            // {
+            //     return StatusCode(409, new { message = "Username already exists." });
+            // }
 
             var userToCreate = new User
             {
@@ -97,10 +92,10 @@ namespace HubalooAPI.Controllers
         }
 
 
-        private async Task<bool> UserExists(string username)
-        {
-            return await _authManager.UserExists(username);
+        // private async Task<bool> UserExists(string username)
+        // {
+        //     return await _authManager.UserExists(username);
 
-        }
+        // }
     }
 }

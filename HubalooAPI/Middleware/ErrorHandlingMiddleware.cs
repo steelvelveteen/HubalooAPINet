@@ -45,6 +45,14 @@ namespace HubalooAPI.Middleware
             {
 
             }
+            else if (exception is UnauthorizedAccessException)
+            {
+                httpStatusCode = HttpStatusCode.Unauthorized;
+            }
+            else if (exception is PreconditionException)
+            {
+                httpStatusCode = HttpStatusCode.BadRequest;
+            }
 
             var responseBody = JsonConvert.SerializeObject(new
             {

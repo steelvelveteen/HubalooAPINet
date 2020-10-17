@@ -32,7 +32,7 @@ Content-Type: application/json
 
 {
     "email": "joeyvico@gmail.com",
-    "password": "quicksilver74"
+    "password": "quicksilver73"
 }
 ###  Passing empty data  to test backend's validation
 POST http://localhost:5000/auth/login

@@ -36,25 +36,25 @@ namespace HubalooAPI.Dal.Auth
                 user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
 
             }
-            catch (RepositoryException e)
-            {
-                _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
-                return null;
-            }
+            // catch (RepositoryException e)
+            // {
+            //     _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
+            //     return null;
+            // }
             catch (Exception e)
             {
                 _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
                 return null;
             }
-            if (user == null)
-            {
-                return null;
-            }
+            // if (user == null)
+            // {
+            //     return null;
+            // }
 
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                return null;
-            }
+            // if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            // {
+            //     throw new UnauthorizedAccessException("Repository exception happend");
+            // }
 
             return user;
         }

@@ -44,7 +44,6 @@ namespace HubalooAPI
 
             // Middleware
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseMiddleware<FirstCustomMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseCors(builder => builder

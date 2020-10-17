@@ -4,6 +4,7 @@ namespace HubalooAPI.Interfaces.Validators
 {
     public interface IAuthValidator
     {
-        bool ValidateUserLogin(UserLoginRequestDto userLoginRequestDto);
+        // bool ValidateUserLogin(UserLoginRequestDto userLoginRequestDto);
+        void ValidateUserLogin(UserLoginRequestDto userLoginRequestDto);
     }
 }

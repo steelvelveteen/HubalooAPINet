@@ -3,8 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using HubalooAPI.Exceptions;
 using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
+using HubalooAPI.Interfaces.Validators;
 using HubalooAPI.Models.Auth;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,35 +17,54 @@ namespace HubalooAPI.BLL
     {
         private readonly IAuthRepository _authRepository;
         private readonly IConfiguration _configuration;
+        private readonly IAuthValidator _authValidator;
 
-
-        public AuthManager(IAuthRepository authRepository, IConfiguration configuration)
+        public AuthManager(IAuthRepository authRepository, IAuthValidator authValidator, IConfiguration configuration)
         {
             _authRepository = authRepository;
             _configuration = configuration;
+            _authValidator = authValidator;
         }
 
-        public async Task<UserLoginResponseDto> Login(string email, string password)
+        public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
         {
-            User user = await _authRepository.Login(email, password);
+            _authValidator.ValidateUserLogin(userLoginRequestDto);
 
-            var claims = new[] {
-                new Claim(ClaimTypes.Email, user.Email)
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if (!await UserExists(userLoginRequestDto.Email))
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
+                throw new UnauthorizedAccessException("User does not exist");
+            }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+            User user = null;
+            JwtSecurityToken token = null;
+            try
+            {
+                user = await _authRepository.Login(userLoginRequestDto.Email, userLoginRequestDto.Password);
+
+                VerifyPasswordHash(userLoginRequestDto.Password, user.PasswordHash, user.PasswordSalt);
+
+                var claims = new[] {
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddDays(1),
+                    SigningCredentials = creds
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new UnauthorizedAccessException(ex.Message);
+            }
 
             return new UserLoginResponseDto
             {
@@ -58,9 +79,24 @@ namespace HubalooAPI.BLL
             return _authRepository.Signup(user, password);
         }
 
-        public Task<bool> UserExists(string email)
+        private Task<bool> UserExists(string email)
         {
             return _authRepository.UserExists(email);
+        }
+
+        private void VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        throw new UnauthorizedAccessException("Password verification failed");
+                    }
+                }
+            }
         }
     }
 }
