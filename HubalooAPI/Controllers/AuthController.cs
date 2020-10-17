@@ -43,24 +43,6 @@ namespace HubalooAPI.Controllers
 
             var createdUser = await _authManager.Signup(newUserSignUp, userSignUpRequestDto.Password);
             return createdUser;
-
-            // return StatusCode(201, new
-            // {
-            //     message = "User successfully created.",
-            //     user = new
-            //     {
-            //         user_id = createdUser.Id,
-            //         email = createdUser.Email
-            //     }
-
-            // });
         }
-
-
-        // private async Task<bool> UserExists(string username)
-        // {
-        //     return await _authManager.UserExists(username);
-
-        // }
     }
 }

@@ -76,6 +76,11 @@ namespace HubalooAPI.BLL
 
         public async Task<UserSignUpResponseDto> Signup(User user, string password)
         {
+            if (!await UserExists(userLoginRequestDto.Email))
+            {
+                throw new UnauthorizedAccessException("User does not exist");
+            }
+
             User createdUser = null;
             try
             {
