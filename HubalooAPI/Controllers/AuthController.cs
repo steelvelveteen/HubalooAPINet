@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 
-namespace WebAPIv2.Controllers
+namespace HubalooAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -22,43 +22,12 @@ namespace WebAPIv2.Controllers
         // private readonly ILogger<AuthController> _logger;
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthController> _logger;
         public AuthController(IAuthManager authManager, ILogger<AuthController> logger, IConfiguration configuration)
         {
             _authManager = authManager;
             _configuration = configuration;
-        }
-
-        // https://localhost:5001/auth/Signup
-        [HttpPost]
-        [Route("/[controller]/Signup")]
-        public async Task<IActionResult> Signup(UserForRegisterDto userForRegisterDto)
-        {
-            // Validate request
-            userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
-
-            // Check if user already exists
-            if (await UserExists(userForRegisterDto.Email))
-            {
-                return StatusCode(409, new { message = "Username already exists." });
-            }
-
-            var userToCreate = new User
-            {
-                Email = userForRegisterDto.Email
-            };
-
-            var createdUser = await _authManager.Signup(userToCreate, userForRegisterDto.Password);
-
-            return StatusCode(201, new
-            {
-                message = "User successfully created.",
-                user = new
-                {
-                    user_id = createdUser.Id,
-                    email = createdUser.Email
-                }
-
-            });
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -66,6 +35,8 @@ namespace WebAPIv2.Controllers
         [Route("/[controller]/Login")]
         public async Task<IActionResult> Login(UserLoginDto userLoginDto)
         {
+            _logger.LogInformation(1101, "Login controller logger activated. {Time}", DateTime.Now);
+
             if (String.IsNullOrEmpty(userLoginDto.Email.Trim()) || String.IsNullOrEmpty(userLoginDto.Password.Trim()))
             {
                 return Unauthorized("Username and Password are required");
@@ -114,7 +85,7 @@ namespace WebAPIv2.Controllers
                     token = tokenHandler.WriteToken(token)
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500, new
                 {
@@ -125,6 +96,40 @@ namespace WebAPIv2.Controllers
             }
 
         }
+
+        // https://localhost:5001/auth/Signup
+        [HttpPost]
+        [Route("/[controller]/Signup")]
+        public async Task<IActionResult> Signup(UserForRegisterDto userForRegisterDto)
+        {
+            // Validate request
+            userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
+
+            // Check if user already exists
+            if (await UserExists(userForRegisterDto.Email))
+            {
+                return StatusCode(409, new { message = "Username already exists." });
+            }
+
+            var userToCreate = new User
+            {
+                Email = userForRegisterDto.Email
+            };
+
+            var createdUser = await _authManager.Signup(userToCreate, userForRegisterDto.Password);
+
+            return StatusCode(201, new
+            {
+                message = "User successfully created.",
+                user = new
+                {
+                    user_id = createdUser.Id,
+                    email = createdUser.Email
+                }
+
+            });
+        }
+
 
         private async Task<bool> UserExists(string username)
         {
