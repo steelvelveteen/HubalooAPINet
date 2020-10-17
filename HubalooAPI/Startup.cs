@@ -1,8 +1,10 @@
 using HubalooAPI.BLL;
+using HubalooAPI.BLL.Validators;
 using HubalooAPI.Dal.Auth;
 using HubalooAPI.Dal.Database;
 using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
+using HubalooAPI.Interfaces.Validators;
 using HubalooAPI.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,7 @@ namespace HubalooAPI
             services.AddSingleton<IDatabase, DapperDatabase>();
             services.AddSingleton<IAuthManager, AuthManager>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
+            services.AddSingleton<IAuthValidator, AuthValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

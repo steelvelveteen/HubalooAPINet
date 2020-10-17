@@ -1,8 +1,7 @@
-namespace HubalooAPI.Models.DTOs
+namespace HubalooAPI.Models.Auth
 {
-    public class UserForRegisterDto
+    public class UserSignUpRequestDto
     {
-
         public string Email { get; set; }
         public string Password { get; set; }
     }

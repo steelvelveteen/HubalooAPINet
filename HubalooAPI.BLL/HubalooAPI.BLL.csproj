@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj" />
+    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="System.Security.Claims" Version="4.3.0"/>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0-rc.2.20475.5"/>
+  </ItemGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
 </Project>

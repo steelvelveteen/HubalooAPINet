@@ -1,17 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using HubalooAPI.Models.DTOs;
 using HubalooAPI.Models.Auth;
 using HubalooAPI.Interfaces.BLL;
 using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Text;
-using System.Security.Claims;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
+using HubalooAPI.Interfaces.Validators;
 
 namespace HubalooAPI.Controllers
 {
@@ -23,28 +18,28 @@ namespace HubalooAPI.Controllers
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<AuthController> _logger;
-        public AuthController(IAuthManager authManager, ILogger<AuthController> logger, IConfiguration configuration)
+        private readonly IAuthValidator _authValidator;
+        public AuthController(IAuthManager authManager, IAuthValidator authValidator, ILogger<AuthController> logger, IConfiguration configuration)
         {
             _authManager = authManager;
             _configuration = configuration;
             _logger = logger;
+            _authValidator = authValidator;
         }
 
         [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
-        public async Task<IActionResult> Login(UserLoginDto userLoginDto)
+        public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto userLoginRequestDto)
         {
             _logger.LogInformation(1101, "Login controller logger activated. {Time}", DateTime.Now);
 
-            if (String.IsNullOrEmpty(userLoginDto.Email.Trim()) || String.IsNullOrEmpty(userLoginDto.Password.Trim()))
+            if (_authValidator.ValidateUserLogin(userLoginRequestDto))
             {
                 return Unauthorized("Username and Password are required");
-
             }
 
-            var emailExists = await _authManager.UserExists(userLoginDto.Email);
-            if (!emailExists)
+            if (!await _authManager.UserExists(userLoginRequestDto.Email))
             {
                 return StatusCode(401, new
                 {
@@ -57,33 +52,9 @@ namespace HubalooAPI.Controllers
             try
             {
 
-                var authUser = await _authManager.Login(userLoginDto.Email, userLoginDto.Password);
-                var claims = new[] {
-                new Claim(ClaimTypes.Email, authUser.Email)
-            };
+                var authUser = await _authManager.Login(userLoginRequestDto.Email, userLoginRequestDto.Password);
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.Now.AddDays(1),
-                    SigningCredentials = creds
-                };
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-
-                return Ok(new
-                {
-                    message = "Login Success",
-                    user_id = authUser.Id,
-                    email = authUser.Email,
-                    token = tokenHandler.WriteToken(token)
-                });
+                return Ok(authUser);
             }
             catch (Exception)
             {
@@ -100,23 +71,23 @@ namespace HubalooAPI.Controllers
         // https://localhost:5001/auth/Signup
         [HttpPost]
         [Route("/[controller]/Signup")]
-        public async Task<IActionResult> Signup(UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Signup(UserSignUpRequestDto userSignUpRequestDto)
         {
             // Validate request
-            userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
+            userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
 
             // Check if user already exists
-            if (await UserExists(userForRegisterDto.Email))
+            if (await UserExists(userSignUpRequestDto.Email))
             {
                 return StatusCode(409, new { message = "Username already exists." });
             }
 
             var userToCreate = new User
             {
-                Email = userForRegisterDto.Email
+                Email = userSignUpRequestDto.Email
             };
 
-            var createdUser = await _authManager.Signup(userToCreate, userForRegisterDto.Password);
+            var createdUser = await _authManager.Signup(userToCreate, userSignUpRequestDto.Password);
 
             return StatusCode(201, new
             {

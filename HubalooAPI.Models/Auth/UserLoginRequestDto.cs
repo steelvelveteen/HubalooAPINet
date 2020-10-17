@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace HubalooAPI.Models.DTOs
+namespace HubalooAPI.Models.Auth
 {
-    public class UserLoginDto
+    public class UserLoginRequestDto
     {
         [Required(ErrorMessage = "Email must be provided.",
-        AllowEmptyStrings = false)]
+       AllowEmptyStrings = false)]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password must be provided.",
