@@ -74,17 +74,17 @@ namespace HubalooAPI.BLL
             };
         }
 
-        public async Task<UserSignUpResponseDto> Signup(User user, string password)
+        public async Task<UserSignUpResponseDto> Signup(UserSignUpRequestDto userSignUpRequestDto)
         {
-            if (!await UserExists(userLoginRequestDto.Email))
+            if (await UserExists(userSignUpRequestDto.Email))
             {
-                throw new UnauthorizedAccessException("User does not exist");
+                throw new UnauthorizedAccessException("User already exists.");
             }
 
             User createdUser = null;
             try
             {
-                createdUser = await _authRepository.Signup(user, password);
+                createdUser = await _authRepository.Signup(userSignUpRequestDto.Email, userSignUpRequestDto.Password);
             }
             catch (Exception ex)
             {

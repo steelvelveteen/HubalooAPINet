@@ -46,29 +46,34 @@ namespace HubalooAPI.Dal.Auth
             return user;
         }
 
-        public async Task<User> Signup(User user, string password)
+        public async Task<User> Signup(string email, string password)
         {
             byte[] passwordSalt;
             CreatePasswordHash(password, out byte[] passwordHash, out passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+            User newUser = new User
+            {
+                Email = email,
+            };
+
+            newUser.PasswordHash = passwordHash;
+            newUser.PasswordSalt = passwordSalt;
 
             var parameters = new DynamicParameters();
-            parameters.Add("@Email", user.Email);
-            parameters.Add("@PasswordHash", user.PasswordHash);
-            parameters.Add("@PasswordSalt", user.PasswordSalt);
+            parameters.Add("@Email", newUser.Email);
+            parameters.Add("@PasswordHash", newUser.PasswordHash);
+            parameters.Add("@PasswordSalt", newUser.PasswordSalt);
 
             var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
             await _database.ExecuteAsync(sql, parameters);
 
             // Return the user inserted into DB
-            parameters.Add("@Email", user.Email);
+            parameters.Add("@Email", newUser.Email);
             var newSql = "Select * from users WHERE email = @Email";
-            user = await _database.QueryFirstOrDefaultAsync<User>(newSql, parameters);
+            var createdUser = await _database.QueryFirstOrDefaultAsync<User>(newSql, parameters);
 
-            return user;
+            return createdUser;
         }
 
         public async Task<bool> UserExists(string email)

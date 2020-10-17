@@ -36,12 +36,12 @@ namespace HubalooAPI.Controllers
         {
             // Validate request
             userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
-            var newUserSignUp = new User
-            {
-                Email = userSignUpRequestDto.Email
-            };
+            // var newUserSignUp = new User
+            // {
+            //     Email = userSignUpRequestDto.Email
+            // };
 
-            var createdUser = await _authManager.Signup(newUserSignUp, userSignUpRequestDto.Password);
+            var createdUser = await _authManager.Signup(userSignUpRequestDto);
             return createdUser;
         }
     }
