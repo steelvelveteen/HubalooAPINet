@@ -3,10 +3,7 @@ using System.Threading.Tasks;
 using HubalooAPI.Models.Auth;
 using HubalooAPI.Interfaces.BLL;
 using Microsoft.AspNetCore.Authorization;
-using System;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using HubalooAPI.Interfaces.Validators;
 
 namespace HubalooAPI.Controllers
 {
@@ -14,7 +11,6 @@ namespace HubalooAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        // private readonly ILogger<AuthController> _logger;
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
         public AuthController(IAuthManager authManager, IConfiguration configuration)
@@ -23,61 +19,29 @@ namespace HubalooAPI.Controllers
             _configuration = configuration;
         }
 
+        // https://localhost:5001/auth/login
         [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
-        // public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto userLoginRequestDto)
         public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
         {
-
-            // if (!await _authManager.UserExists(userLoginRequestDto.Email))
-            // {
-            //     return StatusCode(401, new
-            //     {
-            //         message = new[] {
-            //                 "The username or password you have enterd is wrong.NET",
-            //                 "Please try again"
-            //         }
-            //     });
-            // }
-            // try
-            // {
             var authUser = await _authManager.Login(userLoginRequestDto);
             return authUser;
-            // return Ok(authUser);
-            // }
-            // catch (Exception)
-            // {
-            //     return StatusCode(500, new
-            //     {
-            //         message = new[] {
-            //             "There was a problem loggin in (NET). Try again later."
-            //         }
-            //     });
-            // }
-
         }
 
-        // https://localhost:5001/auth/Signup
+        // https://localhost:5001/auth/signup
         [HttpPost]
         [Route("/[controller]/Signup")]
         public async Task<IActionResult> Signup(UserSignUpRequestDto userSignUpRequestDto)
         {
             // Validate request
             userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
-
-            // Check if user already exists
-            // if (await UserExists(userSignUpRequestDto.Email))
-            // {
-            //     return StatusCode(409, new { message = "Username already exists." });
-            // }
-
-            var userToCreate = new User
+            var newUserSignUp = new User
             {
                 Email = userSignUpRequestDto.Email
             };
 
-            var createdUser = await _authManager.Signup(userToCreate, userSignUpRequestDto.Password);
+            var createdUser = await _authManager.Signup(newUserSignUp, userSignUpRequestDto.Password);
 
             return StatusCode(201, new
             {

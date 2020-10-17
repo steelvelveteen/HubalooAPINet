@@ -47,7 +47,7 @@ namespace HubalooAPI.Middleware
             }
             else if (exception is UnauthorizedAccessException)
             {
-                httpStatusCode = HttpStatusCode.Unauthorized;
+                httpStatusCode = HttpStatusCode.Conflict;
             }
             else if (exception is PreconditionException)
             {

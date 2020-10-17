@@ -1,32 +1,4 @@
 ### Testing the environment, connecting to psql running locally
-POST http://localhost:5000/auth/signup
-Content-Type: application/json
-
-{
-    "email": "joeyvico@gmail.com",
-    "password": "quicksilver74"
-}
-
-### Testing the environment, connecting to psql running locally
-POST http://localhost:5000/auth/signup
-Content-Type: application/json
-
-{
-    "email": "sonoya@gmail.com",
-    "password": "quicksilver74"
-}
-
-### Testing the environment, connecting to psql running locally
-POST http://localhost:5000/auth/signup
-Content-Type: application/json
-
-{
-    "email": "dummy@gmail.com",
-    "password": "quicksilver74"
-}
-
-
-### Testing the environment, connecting to psql running locally
 POST http://localhost:5000/auth/login
 Content-Type: application/json
 
@@ -43,7 +15,6 @@ Content-Type: application/json
     "password": ""
 }
 
-
 ###  connecting to psql running locally
 POST http://localhost:5000/auth/login
 Content-Type: application/json
@@ -52,7 +23,6 @@ Content-Type: application/json
     "email": "sonoya@gmail.com",
     "password": "quicksilver74"
 }
-
 
 ###  connecting to psql running locally
 POST http://localhost:5000/auth/login

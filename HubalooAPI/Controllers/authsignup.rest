@@ -1,0 +1,34 @@
+### A fail  signup
+POST http://localhost:5000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "joeyvcom",
+    "password": "quicksilver74"
+}
+### Testing the environment, connecting to psql running locally
+POST http://localhost:5000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "joeyvico@gmail.com",
+    "password": "quicksilver74"
+}
+
+### Testing the environment, connecting to psql running locally
+POST http://localhost:5000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "sonoya@gmail.com",
+    "password": "quicksilver74"
+}
+
+### Testing the environment, connecting to psql running locally
+POST http://localhost:5000/auth/signup
+Content-Type: application/json
+
+{
+    "email": "dummy@gmail.com",
+    "password": "quicksilver74"
+}

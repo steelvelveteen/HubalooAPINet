@@ -5,7 +5,9 @@ namespace HubalooAPI.Models.Auth
     public class UserLoginRequestDto
     {
         [Required(ErrorMessage = "Email must be provided.",
-       AllowEmptyStrings = false)]
+        AllowEmptyStrings = false)]
+        // [EmailAddress]
+        // [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password must be provided.",

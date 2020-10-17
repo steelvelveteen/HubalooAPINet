@@ -7,11 +7,11 @@ namespace HubalooAPI.BLL.Validators
 {
     public class AuthValidator : IAuthValidator
     {
-        public void ValidateUserLogin(UserLoginRequestDto userLoginRequestDto)
+        public void ValidateCredentials(UserLoginRequestDto userLoginRequestDto)
         {
             if (String.IsNullOrEmpty(userLoginRequestDto.Email.Trim()) || String.IsNullOrEmpty(userLoginRequestDto.Password.Trim()))
             {
-                throw new PreconditionException("Email and Password are requiredyes");
+                throw new PreconditionException("Email and Password are required.");
             }
         }
     }

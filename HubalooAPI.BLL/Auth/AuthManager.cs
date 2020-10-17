@@ -28,7 +28,7 @@ namespace HubalooAPI.BLL
 
         public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
         {
-            _authValidator.ValidateUserLogin(userLoginRequestDto);
+            _authValidator.ValidateCredentials(userLoginRequestDto);
 
             if (!await UserExists(userLoginRequestDto.Email))
             {
@@ -93,7 +93,7 @@ namespace HubalooAPI.BLL
                 {
                     if (computedHash[i] != passwordHash[i])
                     {
-                        throw new UnauthorizedAccessException("Password verification failed");
+                        throw new UnauthorizedAccessException("The username or password you have entered is wrong. Please try again");
                     }
                 }
             }
