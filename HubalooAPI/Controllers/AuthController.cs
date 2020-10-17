@@ -17,13 +17,11 @@ namespace HubalooAPI.Controllers
         // private readonly ILogger<AuthController> _logger;
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<AuthController> _logger;
         private readonly IAuthValidator _authValidator;
-        public AuthController(IAuthManager authManager, IAuthValidator authValidator, ILogger<AuthController> logger, IConfiguration configuration)
+        public AuthController(IAuthManager authManager, IAuthValidator authValidator, IConfiguration configuration)
         {
             _authManager = authManager;
             _configuration = configuration;
-            _logger = logger;
             _authValidator = authValidator;
         }
 
@@ -32,12 +30,10 @@ namespace HubalooAPI.Controllers
         [Route("/[controller]/Login")]
         public async Task<ActionResult<UserLoginResponseDto>> Login(UserLoginRequestDto userLoginRequestDto)
         {
-            _logger.LogInformation(1101, "Login controller logger activated. {Time}", DateTime.Now);
-
-            if (_authValidator.ValidateUserLogin(userLoginRequestDto))
-            {
-                return Unauthorized("Username and Password are required");
-            }
+            // if (_authValidator.ValidateUserLogin(userLoginRequestDto))
+            // {
+            //     return Unauthorized("Username and Password are required");
+            // }
 
             if (!await _authManager.UserExists(userLoginRequestDto.Email))
             {
@@ -51,7 +47,6 @@ namespace HubalooAPI.Controllers
             }
             try
             {
-
                 var authUser = await _authManager.Login(userLoginRequestDto.Email, userLoginRequestDto.Password);
 
                 return Ok(authUser);

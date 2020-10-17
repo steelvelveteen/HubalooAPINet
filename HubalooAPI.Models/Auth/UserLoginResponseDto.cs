@@ -5,6 +5,6 @@ namespace HubalooAPI.Models.Auth
         public string Message { get; set; } = "Login successfull";
         public int UserId { get; set; }
         public string Email { get; set; }
-        public object Token { get; set; }
+        public string Token { get; set; }
     }
 }
