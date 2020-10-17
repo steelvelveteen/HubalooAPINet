@@ -74,9 +74,23 @@ namespace HubalooAPI.BLL
             };
         }
 
-        public Task<User> Signup(User user, string password)
+        public async Task<UserSignUpResponseDto> Signup(User user, string password)
         {
-            return _authRepository.Signup(user, password);
+            User createdUser = null;
+            try
+            {
+                createdUser = await _authRepository.Signup(user, password);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Signup failed", ex);
+            }
+
+            return new UserSignUpResponseDto
+            {
+                UserId = createdUser.Id,
+                Email = createdUser.Email
+            };
         }
 
         private Task<bool> UserExists(string email)

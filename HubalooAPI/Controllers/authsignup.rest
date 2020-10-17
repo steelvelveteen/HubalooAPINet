@@ -3,7 +3,7 @@ POST http://localhost:5000/auth/signup
 Content-Type: application/json
 
 {
-    "email": "joeyvcom",
+    "email": "joeyvico@gmail.com",
     "password": "quicksilver74"
 }
 ### Testing the environment, connecting to psql running locally

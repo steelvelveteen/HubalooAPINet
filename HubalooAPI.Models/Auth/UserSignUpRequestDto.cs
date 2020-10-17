@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HubalooAPI.Models.Attributes;
 
 namespace HubalooAPI.Models.Auth
 {
@@ -11,6 +12,7 @@ namespace HubalooAPI.Models.Auth
 
         [Required(ErrorMessage = "Password must be provided.",
         AllowEmptyStrings = false)]
+        [Password(ErrorMessage = "Password is too short")]
         public string Password { get; set; }
     }
 }

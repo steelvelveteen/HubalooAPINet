@@ -32,7 +32,7 @@ namespace HubalooAPI.Controllers
         // https://localhost:5001/auth/signup
         [HttpPost]
         [Route("/[controller]/Signup")]
-        public async Task<IActionResult> Signup(UserSignUpRequestDto userSignUpRequestDto)
+        public async Task<UserSignUpResponseDto> Signup(UserSignUpRequestDto userSignUpRequestDto)
         {
             // Validate request
             userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
@@ -42,17 +42,18 @@ namespace HubalooAPI.Controllers
             };
 
             var createdUser = await _authManager.Signup(newUserSignUp, userSignUpRequestDto.Password);
+            return createdUser;
 
-            return StatusCode(201, new
-            {
-                message = "User successfully created.",
-                user = new
-                {
-                    user_id = createdUser.Id,
-                    email = createdUser.Email
-                }
+            // return StatusCode(201, new
+            // {
+            //     message = "User successfully created.",
+            //     user = new
+            //     {
+            //         user_id = createdUser.Id,
+            //         email = createdUser.Email
+            //     }
 
-            });
+            // });
         }
 
 
