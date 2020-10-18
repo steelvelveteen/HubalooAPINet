@@ -34,12 +34,7 @@ namespace HubalooAPI.Controllers
         [Route("/[controller]/Signup")]
         public async Task<UserSignUpResponseDto> Signup(UserSignUpRequestDto userSignUpRequestDto)
         {
-            // Validate request
             userSignUpRequestDto.Email = userSignUpRequestDto.Email.ToLower();
-            // var newUserSignUp = new User
-            // {
-            //     Email = userSignUpRequestDto.Email
-            // };
 
             var createdUser = await _authManager.Signup(userSignUpRequestDto);
             return createdUser;

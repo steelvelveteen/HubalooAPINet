@@ -80,16 +80,7 @@ namespace HubalooAPI.BLL
             {
                 throw new UnauthorizedAccessException("User already exists.");
             }
-
-            User createdUser = null;
-            try
-            {
-                createdUser = await _authRepository.Signup(userSignUpRequestDto.Email, userSignUpRequestDto.Password);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Signup failed", ex);
-            }
+            var createdUser = await _authRepository.Signup(userSignUpRequestDto.Email, userSignUpRequestDto.Password);
 
             return new UserSignUpResponseDto
             {

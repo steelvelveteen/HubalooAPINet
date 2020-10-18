@@ -25,25 +25,20 @@ namespace HubalooAPI.Dal.Auth
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
-            var sql = "Select * from users WHERE email = @Email";
-
+            var sql = "Select * from Use WHERE email = @Email";
             // Following deliberately set to fail Internal Server Error
             // var sql = "Select * from use WHERE email = @Email ";
-
             User user;
             try
             {
                 user = await _database.QueryFirstOrDefaultAsync<User>(sql, parameters);
-
+                return user;
             }
-
             catch (Exception e)
             {
                 _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
-                return null;
+                throw new RepositoryException("Login failed at repository level.");
             }
-
-            return user;
         }
 
         public async Task<User> Signup(string email, string password)
@@ -66,8 +61,14 @@ namespace HubalooAPI.Dal.Auth
 
             var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
-            await _database.ExecuteAsync(sql, parameters);
-
+            try
+            {
+                await _database.ExecuteAsync(sql, parameters);
+            }
+            catch (Exception)
+            {
+                throw new RepositoryException("Failed to insert user to database.");
+            }
             // Return the user inserted into DB
             parameters.Add("@Email", newUser.Email);
             var newSql = "Select * from users WHERE email = @Email";
