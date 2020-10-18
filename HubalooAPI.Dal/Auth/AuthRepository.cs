@@ -59,7 +59,7 @@ namespace HubalooAPI.Dal.Auth
             parameters.Add("@PasswordHash", newUser.PasswordHash);
             parameters.Add("@PasswordSalt", newUser.PasswordSalt);
 
-            var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
+            var sql = $"insert into Use (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
             try
             {

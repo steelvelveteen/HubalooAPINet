@@ -2,6 +2,8 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using HubalooAPI.Exceptions;
+using HubalooAPI.Exceptions.Attributes;
+using HubalooAPI.Exceptions.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -37,6 +39,8 @@ namespace HubalooAPI.Middleware
         {
             var httpStatusCode = HttpStatusCode.InternalServerError;
             var errorMessage = exception.Message;
+            var errorRefCode = ErrorCodeReference.GeneralUnexpected;
+            // var errorCode = errorRefCode.
             if (exception is ApiException)
             {
                 httpStatusCode = HttpStatusCode.BadRequest;
@@ -57,6 +61,7 @@ namespace HubalooAPI.Middleware
 
             var responseBody = JsonConvert.SerializeObject(new
             {
+                code = errorRefCode,
                 message = errorMessage
             });
 
