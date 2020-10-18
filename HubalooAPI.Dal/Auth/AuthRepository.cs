@@ -65,9 +65,9 @@ namespace HubalooAPI.Dal.Auth
             {
                 await _database.ExecuteAsync(sql, parameters);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new RepositoryException("Failed to insert user to database.");
+                throw new RepositoryException("Failed to insert user to database.", ex);
             }
             // Return the user inserted into DB
             parameters.Add("@Email", newUser.Email);

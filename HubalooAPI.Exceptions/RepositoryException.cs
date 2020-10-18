@@ -12,7 +12,7 @@ namespace HubalooAPI.Exceptions
         { }
 
         public RepositoryException(string message, Exception inner)
-        : base(message, inner)
+        : base($"Repository exception =>> {message}", inner)
         { }
     }
 }
