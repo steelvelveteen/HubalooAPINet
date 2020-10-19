@@ -25,7 +25,7 @@ namespace HubalooAPI.Dal.Auth
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
-            var sql = "Select * from Use WHERE email = @Email";
+            var sql = "Select * from Users WHERE email = @Email";
             // Following deliberately set to fail Internal Server Error
             // var sql = "Select * from use WHERE email = @Email ";
             User user;
@@ -59,7 +59,7 @@ namespace HubalooAPI.Dal.Auth
             parameters.Add("@PasswordHash", newUser.PasswordHash);
             parameters.Add("@PasswordSalt", newUser.PasswordSalt);
 
-            var sql = $"insert into Use (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
+            var sql = $"insert into Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
 
             try
             {
