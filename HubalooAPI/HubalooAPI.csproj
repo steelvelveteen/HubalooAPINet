@@ -4,7 +4,6 @@
     <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
     <ProjectReference Include="..\HubalooAPI.BLL\HubalooAPI.BLL.csproj"/>
     <ProjectReference Include="..\HubalooAPI.Dal\HubalooAPI.Dal.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Injection\HubalooAPI.Injection.csproj"/>
     <ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj"/>
   </ItemGroup>
   <ItemGroup>

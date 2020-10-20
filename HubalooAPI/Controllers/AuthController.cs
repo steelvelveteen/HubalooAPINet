@@ -19,7 +19,7 @@ namespace HubalooAPI.Controllers
             _configuration = configuration;
         }
 
-        // https://localhost:5001/auth/login
+        // https://localhost:5000/auth/login
         [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
@@ -29,7 +29,7 @@ namespace HubalooAPI.Controllers
             return authUser;
         }
 
-        // https://localhost:5001/auth/signup
+        // https://localhost:5000/auth/signup
         [HttpPost]
         [Route("/[controller]/Signup")]
         public async Task<UserSignUpResponseDto> Signup(UserSignUpRequestDto userSignUpRequestDto)
@@ -41,7 +41,7 @@ namespace HubalooAPI.Controllers
         }
 
 
-        // https://localhost:5001/auth/resetpassword
+        // https://localhost:5000/auth/resetpassword
         [HttpPost]
         [Route("/[controller]/ResetPassword")]
         public async Task<ResetPasswordResponseDto> ResetPassword(ResetPasswordRequestDto resetPasswordRequestDto)
