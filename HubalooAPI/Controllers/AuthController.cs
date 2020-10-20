@@ -39,5 +39,15 @@ namespace HubalooAPI.Controllers
             var createdUser = await _authManager.Signup(userSignUpRequestDto);
             return createdUser;
         }
+
+
+        // https://localhost:5001/auth/resetpassword
+        [HttpPost]
+        [Route("/[controller]/ResetPassword")]
+        public async Task<ResetPasswordResponseDto> ResetPassword(ResetPasswordRequestDto resetPasswordRequestDto)
+        {
+            var updatedUser = await _authManager.ResetPassword(resetPasswordRequestDto);
+            return updatedUser;
+        }
     }
 }

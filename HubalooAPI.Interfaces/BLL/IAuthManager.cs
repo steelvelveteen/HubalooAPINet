@@ -7,5 +7,7 @@ namespace HubalooAPI.Interfaces.BLL
     {
         Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto);
         Task<UserSignUpResponseDto> Signup(UserSignUpRequestDto userSignUpRequestDto);
+
+        Task<ResetPasswordResponseDto> ResetPassword(ResetPasswordRequestDto resetPasswordRequestDto);
     }
 }

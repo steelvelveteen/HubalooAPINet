@@ -21,7 +21,7 @@ namespace HubalooAPI.Dal.Auth
             _logger = logger;
         }
 
-        public async Task<User> Login(string useremail, string password)
+        public async Task<User> GetUserLogin(string useremail, string password)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@Email", useremail);
@@ -37,7 +37,7 @@ namespace HubalooAPI.Dal.Auth
             catch (Exception e)
             {
                 _logger.LogError($"MSG:{e.Message} || SRC:{e.Source} || S.TRACE{e.StackTrace}");
-                throw new RepositoryException("Login failed at repository level.");
+                throw new RepositoryException("Get user login details failed at repository level.");
             }
         }
 
@@ -90,6 +90,41 @@ namespace HubalooAPI.Dal.Auth
                 return false;
             }
             return true;
+        }
+
+        public async Task<User> ResetPassword(string email, string password)
+        {
+            byte[] passwordSalt;
+            CreatePasswordHash(password, out byte[] passwordHash, out passwordSalt);
+
+            User updateUser = new User
+            {
+                Email = email,
+            };
+
+            updateUser.PasswordHash = passwordHash;
+            updateUser.PasswordSalt = passwordSalt;
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@Email", updateUser.Email);
+            parameters.Add("@PasswordHash", updateUser.PasswordHash);
+            parameters.Add("@PasswordSalt", updateUser.PasswordSalt);
+
+            // var sql = $"UPDATE Users (email, PasswordHash, PasswordSalt) values (@Email, @PasswordHash, @PasswordSalt)";
+            var sql = $"UPDATE Users SET PasswordHash = @PasswordHash, PasswordSalt = @PasswordSalt WHERE email = @Email";
+            try
+            {
+                await _database.ExecuteAsync(sql, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException("Failed to update user to database.", ex);
+            }
+            // Get that updated user
+            var newSql = "Select * from users WHERE email = @Email";
+            var updatedUser = await _database.QueryFirstOrDefaultAsync<User>(newSql, parameters);
+
+            return updatedUser;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

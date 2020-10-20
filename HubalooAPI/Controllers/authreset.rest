@@ -1,0 +1,8 @@
+### Reset password
+POST http://localhost:5000/auth/resetpassword
+Content-Type: application/json
+
+{
+    "email": "joeyvico@gmail.com",
+    "password": "quicksilver77"
+}

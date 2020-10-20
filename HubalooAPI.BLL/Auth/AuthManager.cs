@@ -39,7 +39,7 @@ namespace HubalooAPI.BLL
             JwtSecurityToken token = null;
             try
             {
-                user = await _authRepository.Login(userLoginRequestDto.Email, userLoginRequestDto.Password);
+                user = await _authRepository.GetUserLogin(userLoginRequestDto.Email, userLoginRequestDto.Password);
 
                 VerifyPasswordHash(userLoginRequestDto.Password, user.PasswordHash, user.PasswordSalt);
 
@@ -86,6 +86,33 @@ namespace HubalooAPI.BLL
             {
                 UserId = createdUser.Id,
                 Email = createdUser.Email
+            };
+        }
+
+        public async Task<ResetPasswordResponseDto> ResetPassword(ResetPasswordRequestDto resetPasswordRequestDto)
+        {
+            if (!await UserExists(resetPasswordRequestDto.Email))
+            {
+                throw new UnauthorizedAccessException("User does not exist");
+            }
+
+            // Get the user from repository - database
+            var user = await _authRepository.GetUserLogin(resetPasswordRequestDto.Email, resetPasswordRequestDto.Password);
+            User updatedUser;
+            try
+            {
+                updatedUser = await _authRepository.ResetPassword(resetPasswordRequestDto.Email, resetPasswordRequestDto.Password);
+                // update database
+            }
+            catch (Exception ex)
+            {
+                throw new ApiException("Failed to update user to database.", ex);
+            }
+
+            return new ResetPasswordResponseDto
+            {
+                UserId = updatedUser.Id,
+                Email = updatedUser.Email
             };
         }
 
