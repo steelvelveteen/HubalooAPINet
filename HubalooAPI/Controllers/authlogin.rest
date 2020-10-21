@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "email": "joeyvico@gmail.com",
-    "password": "quicksilver77"
+    "password": "quicksilver74"
 }
 ###  Passing empty data  to test backend's validation
 POST http://localhost:5000/auth/login

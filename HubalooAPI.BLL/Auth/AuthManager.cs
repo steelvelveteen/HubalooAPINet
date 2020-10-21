@@ -43,23 +43,7 @@ namespace HubalooAPI.BLL
 
                 VerifyPasswordHash(userLoginRequestDto.Password, user.PasswordHash, user.PasswordSalt);
 
-                var claims = new[] {
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
-
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.Now.AddDays(1),
-                    SigningCredentials = creds
-                };
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+                token = GenerateSecurityToken(user.Email);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -134,6 +118,28 @@ namespace HubalooAPI.BLL
                     }
                 }
             }
+        }
+
+        private JwtSecurityToken GenerateSecurityToken(string email)
+        {
+            var claims = new[] {
+                    new Claim(ClaimTypes.Email, email)
+                };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+            return token;
         }
     }
 }
