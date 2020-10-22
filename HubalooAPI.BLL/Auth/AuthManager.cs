@@ -38,15 +38,13 @@ namespace HubalooAPI.BLL
                 throw new UnauthorizedAccessException("User does not exist");
             }
 
-            User user = null;
+            User user;
             // JwtSecurityToken token = null;
             string access_token = null;
             try
             {
                 user = await _authRepository.GetUserLogin(userLoginRequestDto.Email, userLoginRequestDto.Password);
-
                 _securityService.VerifyPasswordHash(userLoginRequestDto.Password, user.PasswordHash, user.PasswordSalt);
-
                 // token = GenerateSecurityToken(user.Email);
                 access_token = _securityService.GenerateSecurityToken(user.Email);
             }
@@ -110,20 +108,5 @@ namespace HubalooAPI.BLL
         {
             return _authRepository.UserExists(email);
         }
-
-        // private void VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        // {
-        //     using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-        //     {
-        //         var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //         for (int i = 0; i < computedHash.Length; i++)
-        //         {
-        //             if (computedHash[i] != passwordHash[i])
-        //             {
-        //                 throw new UnauthorizedAccessException("The username or password you have entered is wrong. Please try again");
-        //             }
-        //         }
-        //     }
-        // }
     }
 }

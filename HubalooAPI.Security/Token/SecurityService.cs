@@ -39,8 +39,9 @@ namespace HubalooAPI.Security.Token
             // var tokenHandler = new JwtSecurityTokenHandler();
             // var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
             // return token;
-            var token = new JwtSecurityToken(_configuration["AppSettings:Issuer"],
-            _configuration["AppSettings:Issuer"],
+            var token = new JwtSecurityToken(
+            _configuration["AppSettings:Issuer"], // Issuer
+            _configuration["AppSettings:Issuer"], // Audience
             claims,
             expires: DateTime.Now.AddDays(7),
             signingCredentials: creds);
