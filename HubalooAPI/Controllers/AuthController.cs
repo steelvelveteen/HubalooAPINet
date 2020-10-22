@@ -40,7 +40,7 @@ namespace HubalooAPI.Controllers
             return createdUser;
         }
 
-
+        [Authorize]
         // https://localhost:5000/auth/resetpassword
         [HttpPost]
         [Route("/[controller]/ResetPassword")]

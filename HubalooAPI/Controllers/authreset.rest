@@ -6,3 +6,13 @@ Content-Type: application/json
     "email": "joeyvico@gmail.com",
     "password": "quicksilver74"
 }
+
+### Reset password
+POST http://localhost:5000/auth/resetpassword
+Authorization: Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb25veWFAZ21haWwuY29tIiwiZXhwIjoxNjAzOTU4Njk1LCJpc3MiOiJqb2V5dmljb0BnbWFpbC5jb20iLCJhdWQiOiJqb2V5dmljb0BnbWFpbC5jb20ifQ.Z_RVnTyMC0DPfgg51MgA_EySkFz_ZNUobyzi9jFfbsTN4lRprAe5tTcIyylV4sGoMKg5kC1MJ-KhDKB51YxIxw
+Content-Type: application/json
+
+{
+    "email": "sonoya@gmail.com",
+    "password": "quicksilver74"
+}

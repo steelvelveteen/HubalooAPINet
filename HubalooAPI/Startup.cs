@@ -1,3 +1,4 @@
+using System.Text;
 using HubalooAPI.BLL;
 using HubalooAPI.BLL.Validators;
 using HubalooAPI.Dal.Auth;
@@ -6,11 +7,13 @@ using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
 using HubalooAPI.Interfaces.Validators;
 using HubalooAPI.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HubalooAPI
 {
@@ -27,6 +30,24 @@ namespace HubalooAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuers = new string[] { Configuration["AppSettings:Issuer"] },
+                    ValidAudiences = new string[] { Configuration["AppSettings:Issuer"] },
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:APIKEY"]))
+                };
+            });
             services.AddSingleton<IDatabase, DapperDatabase>();
             services.AddSingleton<IAuthManager, AuthManager>();
             services.AddSingleton<IAuthRepository, AuthRepository>();
@@ -51,6 +72,7 @@ namespace HubalooAPI
             .AllowAnyMethod()
             .AllowAnyOrigin());
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

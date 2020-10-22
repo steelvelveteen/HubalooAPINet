@@ -36,7 +36,8 @@ namespace HubalooAPI.BLL
             }
 
             User user = null;
-            JwtSecurityToken token = null;
+            // JwtSecurityToken token = null;
+            string token = null;
             try
             {
                 user = await _authRepository.GetUserLogin(userLoginRequestDto.Email, userLoginRequestDto.Password);
@@ -54,7 +55,8 @@ namespace HubalooAPI.BLL
             {
                 UserId = user.Id,
                 Email = user.Email,
-                Token = token.RawData
+                // Token = token.RawData
+                Token = token
             };
         }
 
@@ -120,26 +122,35 @@ namespace HubalooAPI.BLL
             }
         }
 
-        private JwtSecurityToken GenerateSecurityToken(string email)
+        // private JwtSecurityToken GenerateSecurityToken(string email)
+        private string GenerateSecurityToken(string email)
         {
             var claims = new[] {
-                    new Claim(ClaimTypes.Email, email)
+                    new Claim(ClaimTypes.Email, email),
                 };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:APIKEY").Value));
+            var issuer = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Issuer").Value));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
-            };
+            // var tokenDescriptor = new SecurityTokenDescriptor
+            // {
+            //     Subject = new ClaimsIdentity(claims),
+            //     Expires = DateTime.Now.AddDays(1),
+            //     SigningCredentials = creds,
+            // };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
-            return token;
+            // var tokenHandler = new JwtSecurityTokenHandler();
+            // var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
+            // return token;
+            var token = new JwtSecurityToken(_configuration["AppSettings:Issuer"],
+            _configuration["AppSettings:Issuer"],
+            claims,
+            expires: DateTime.Now.AddDays(7),
+            signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
