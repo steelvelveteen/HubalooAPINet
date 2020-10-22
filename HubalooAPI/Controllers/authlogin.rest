@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "email": "sonoya@gmail.com",
-    "password": "quicksilver74"
+    "password": "quicksilver78"
 }
 
 ###  connecting to psql running locally

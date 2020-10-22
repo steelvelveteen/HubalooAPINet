@@ -47,5 +47,20 @@ namespace HubalooAPI.Security.Token
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public void VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                        throw new UnauthorizedAccessException("The username or password you have entered is wrong. Please try again");
+                    }
+                }
+            }
+        }
     }
 }

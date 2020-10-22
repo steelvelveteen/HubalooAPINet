@@ -7,8 +7,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace HubalooAPI.Controllers
 {
-    [Route("[controller]")]
+    [AllowAnonymous]
     [ApiController]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthManager _authManager;
@@ -20,7 +21,6 @@ namespace HubalooAPI.Controllers
         }
 
         // https://localhost:5000/auth/login
-        [AllowAnonymous]
         [HttpPost]
         [Route("/[controller]/Login")]
         public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
@@ -40,7 +40,6 @@ namespace HubalooAPI.Controllers
             return createdUser;
         }
 
-        [Authorize]
         // https://localhost:5000/auth/resetpassword
         [HttpPost]
         [Route("/[controller]/ResetPassword")]
