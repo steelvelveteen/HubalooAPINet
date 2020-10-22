@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HubalooAPI.Exceptions;
 using HubalooAPI.Interfaces.BLL;
 using HubalooAPI.Interfaces.Dal;
+using HubalooAPI.Interfaces.Security;
 using HubalooAPI.Interfaces.Validators;
 using HubalooAPI.Models.Auth;
 using Microsoft.Extensions.Configuration;
@@ -15,12 +16,14 @@ namespace HubalooAPI.BLL
 {
     public class AuthManager : IAuthManager
     {
+        private readonly ISecurityService _securityService;
         private readonly IAuthRepository _authRepository;
         private readonly IConfiguration _configuration;
         private readonly IAuthValidator _authValidator;
 
-        public AuthManager(IAuthRepository authRepository, IAuthValidator authValidator, IConfiguration configuration)
+        public AuthManager(ISecurityService securityService, IAuthRepository authRepository, IAuthValidator authValidator, IConfiguration configuration)
         {
+            _securityService = securityService;
             _authRepository = authRepository;
             _configuration = configuration;
             _authValidator = authValidator;
@@ -37,14 +40,15 @@ namespace HubalooAPI.BLL
 
             User user = null;
             // JwtSecurityToken token = null;
-            string token = null;
+            string access_token = null;
             try
             {
                 user = await _authRepository.GetUserLogin(userLoginRequestDto.Email, userLoginRequestDto.Password);
 
                 VerifyPasswordHash(userLoginRequestDto.Password, user.PasswordHash, user.PasswordSalt);
 
-                token = GenerateSecurityToken(user.Email);
+                // token = GenerateSecurityToken(user.Email);
+                access_token = _securityService.GenerateSecurityToken(user.Email);
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -56,7 +60,7 @@ namespace HubalooAPI.BLL
                 UserId = user.Id,
                 Email = user.Email,
                 // Token = token.RawData
-                Token = token
+                Token = access_token
             };
         }
 
@@ -120,37 +124,6 @@ namespace HubalooAPI.BLL
                     }
                 }
             }
-        }
-
-        // private JwtSecurityToken GenerateSecurityToken(string email)
-        private string GenerateSecurityToken(string email)
-        {
-            var claims = new[] {
-                    new Claim(ClaimTypes.Email, email),
-                };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:APIKEY").Value));
-            var issuer = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Issuer").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            // var tokenDescriptor = new SecurityTokenDescriptor
-            // {
-            //     Subject = new ClaimsIdentity(claims),
-            //     Expires = DateTime.Now.AddDays(1),
-            //     SigningCredentials = creds,
-            // };
-
-            // var tokenHandler = new JwtSecurityTokenHandler();
-            // var token = (JwtSecurityToken)tokenHandler.CreateToken(tokenDescriptor);
-            // return token;
-            var token = new JwtSecurityToken(_configuration["AppSettings:Issuer"],
-            _configuration["AppSettings:Issuer"],
-            claims,
-            expires: DateTime.Now.AddDays(7),
-            signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
