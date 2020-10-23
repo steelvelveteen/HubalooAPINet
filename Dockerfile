@@ -11,11 +11,14 @@ COPY HubalooAPI.Dal/*.csproj ./HubalooAPI.Dal/
 COPY HubalooAPI.Exceptions/*.csproj ./HubalooAPI.Exceptions/
 COPY HubalooAPI.Interfaces/*.csproj ./HubalooAPI.Interfaces/
 COPY HubalooAPI.Models/*.csproj ./HubalooAPI.Models/
+COPY HubalooAPI.Security/*.csproj ./HubalooAPI.Security
 
 RUN dotnet restore
 COPY . .
 
 # FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS build
+WORKDIR /src/
+RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI
 RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI.BLL
@@ -27,6 +30,8 @@ RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI.Interfaces
 RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI.Models
+RUN dotnet build -c Release -o /app
+WORKDIR /src/HubalooAPI.Security
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
