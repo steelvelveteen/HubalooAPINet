@@ -1,17 +1,17 @@
-// using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace HubalooAPI.Models.Auth
 {
     public class UserLoginRequestDto
     {
-        // [Required(ErrorMessage = "Email must be provided.",
-        // AllowEmptyStrings = false)]
-        // [EmailAddress]
-        // [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
+        [Required(ErrorMessage = "Email must be provided.",
+        AllowEmptyStrings = false)]
+        [EmailAddress]
+        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
         public string Email { get; set; }
 
-        // [Required(ErrorMessage = "Password must be provided.",
-        // AllowEmptyStrings = false)]
+        [Required(ErrorMessage = "Password must be provided.",
+        AllowEmptyStrings = false)]
         public string Password { get; set; }
     }
 }
