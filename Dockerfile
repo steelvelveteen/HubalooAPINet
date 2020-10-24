@@ -1,8 +1,10 @@
 # get# FROM mcr.microsoft.com/dotnet/core/runtime:3.1
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS base
+# FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY HubalooAPINet.sln ./
 COPY HubalooAPI/*.csproj ./HubalooAPI/
@@ -11,14 +13,14 @@ COPY HubalooAPI.Dal/*.csproj ./HubalooAPI.Dal/
 COPY HubalooAPI.Exceptions/*.csproj ./HubalooAPI.Exceptions/
 COPY HubalooAPI.Interfaces/*.csproj ./HubalooAPI.Interfaces/
 COPY HubalooAPI.Models/*.csproj ./HubalooAPI.Models/
-COPY HubalooAPI.Security/*.csproj ./HubalooAPI.Security
-
-RUN dotnet restore
+COPY HubalooAPI.Security/*.csproj ./HubalooAPI.Security/
+# COPY . .
+# RUN dotnet restore
 COPY . .
 
 # FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS build
-WORKDIR /src/
-RUN dotnet build -c Release -o /app
+# WORKDIR /src
+# RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI
 RUN dotnet build -c Release -o /app
 WORKDIR /src/HubalooAPI.BLL

@@ -35,10 +35,13 @@ Content-Type: application/json
 
 #### Docker container running api, exposed port 80
 ### Incoming port defined in the docker run command
-POST http://localhost:/auth/login
+POST http://localhost:49160/auth/login
 Content-Type: application/json
 
 {
     "email": "joeyvico@gmail.com",
     "password": "quicksilver74"
 }
+
+### Incoming 
+GET http://localhost:49160/weatherforecast
