@@ -75,7 +75,7 @@ namespace HubalooAPI
             .AllowAnyMethod()
             .AllowAnyOrigin());
             app.UseRouting();
-            app.UseAuthentication();
+            // app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
