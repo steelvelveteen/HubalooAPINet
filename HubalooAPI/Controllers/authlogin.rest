@@ -45,3 +45,5 @@ Content-Type: application/json
 
 ### Incoming 
 GET http://localhost:49160/weatherforecast
+### Request to local
+GET http://localhost:5000/weatherforecast
