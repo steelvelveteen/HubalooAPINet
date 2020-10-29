@@ -4,6 +4,7 @@ using HubalooAPI.Models.Auth;
 using HubalooAPI.Interfaces.BLL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace HubalooAPI.Controllers
 {
@@ -14,10 +15,13 @@ namespace HubalooAPI.Controllers
     {
         private readonly IAuthManager _authManager;
         private readonly IConfiguration _configuration;
-        public AuthController(IAuthManager authManager, IConfiguration configuration)
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(IAuthManager authManager, IConfiguration configuration, ILogger<AuthController> logger)
         {
             _authManager = authManager;
             _configuration = configuration;
+            _logger = logger;
         }
 
         // https://localhost:5000/auth/login
@@ -25,6 +29,7 @@ namespace HubalooAPI.Controllers
         [Route("/[controller]/Login")]
         public async Task<UserLoginResponseDto> Login(UserLoginRequestDto userLoginRequestDto)
         {
+            _logger.LogInformation("Login request performed");
             var authUser = await _authManager.Login(userLoginRequestDto);
             return authUser;
         }
