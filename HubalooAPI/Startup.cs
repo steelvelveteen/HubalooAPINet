@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace HubalooAPI
 {
@@ -74,6 +75,8 @@ namespace HubalooAPI
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowAnyOrigin());
+
+            app.UseSerilogRequestLogging();
             app.UseRouting();
             // app.UseAuthentication();
             app.UseAuthorization();
