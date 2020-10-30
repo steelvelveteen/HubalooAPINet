@@ -1,7 +1,5 @@
-using System.IO;
 using System;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -11,17 +9,12 @@ namespace HubalooAPI
     {
         public static void Main(string[] args)
         {
-            // var configuration = new ConfigurationBuilder()
-            // .SetBasePath(Directory.GetCurrentDirectory())
-            // .AddJsonFile("appsettings.json")
-            // .Build();
-
             Log.Logger = new LoggerConfiguration()
             // .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
-            .Enrich.WithMachineName()
-            .Enrich.WithProcessId()
-            .Enrich.WithThreadId()
+            // .Enrich.WithMachineName()
+            // .Enrich.WithProcessId()
+            // .Enrich.WithThreadId()
             .WriteTo.Console()
             .CreateLogger();
 

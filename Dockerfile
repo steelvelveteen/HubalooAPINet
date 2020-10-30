@@ -1,5 +1,5 @@
-# get# FROM mcr.microsoft.com/dotnet/core/runtime:3.1
-# FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS base
+# docker build --no-cache -t joeyvico/hubaloo-netcore-docker .
+# docker container run --publish 49160:80 -d joeyvico/hubaloo-netcore-docker
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
