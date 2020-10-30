@@ -58,7 +58,7 @@ namespace HubalooAPI.Security.Token
                 {
                     if (computedHash[i] != passwordHash[i])
                     {
-                        throw new UnauthorizedAccessException("The username or password you have entered is wrong. Please try again");
+                        throw new UnauthorizedAccessException("Email or Password is wrong. Please try again");
                     }
                 }
             }
