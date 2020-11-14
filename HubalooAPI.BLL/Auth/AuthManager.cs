@@ -35,7 +35,7 @@ namespace HubalooAPI.BLL
 
             if (!await UserExists(userLoginRequestDto.Email))
             {
-                throw new UnauthorizedAccessException("User does not exist");
+                throw new UnauthorizedAccessException("Email does not exist");
             }
 
             User user;
