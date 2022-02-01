@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Security.Claims" Version="4.3.0"/>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9"/>
-  </ItemGroup>
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
+		<ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj"/>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Security.Claims" Version="4.3.0"/>
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1"/>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
+	</ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 </Project>

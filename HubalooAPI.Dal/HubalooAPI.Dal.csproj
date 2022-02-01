@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
-    <ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj"/>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Npgsql" Version="5.0.0-alpha1"/>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2"/>
-    <PackageReference Include="Dapper" Version="2.0.35"/>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.9"/>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.9"/>
-  </ItemGroup>
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\HubalooAPI.Models\HubalooAPI.Models.csproj"/>
+		<ProjectReference Include="..\HubalooAPI.Interfaces\HubalooAPI.Interfaces.csproj"/>
+		<ProjectReference Include="..\HubalooAPI.Exceptions\HubalooAPI.Exceptions.csproj"/>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Npgsql" Version="6.0.3"/>
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.3"/>
+		<PackageReference Include="Dapper" Version="2.0.123"/>
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0"/>
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0"/>
+	</ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
 </Project>
